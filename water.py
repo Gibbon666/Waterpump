@@ -24,7 +24,9 @@ def init_output(pin):
     GPIO.output(pin, GPIO.HIGH)
     
 def auto_water(pump_pin = 14):
-    schedule.every().hour.do(pump_on)
+    schedule.every().minute.do(pump_on)
+    while True:
+        schedule.run_pending()
 
 def pump_on(pump_pin=14, number_of_seconds=20, automatically=1):
     init_output(pump_pin)

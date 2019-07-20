@@ -6,27 +6,20 @@ import os
 
 app = Flask(__name__)
 
-def template(title="HELLO!", text="", pump_status=""):
+def template(title="HELLO!", text="", pump_status="", full_log=""):
     now = datetime.datetime.now()
     timeString = now
     templateData = {
         'title' : title,
         'time' : timeString,
         'text' : text,
-        'pump_status' : pump_status
+        'pump_status' : pump_status,
+        'full_log': full_log
         }
     return templateData
 
 @app.route("/")
 def hello():
-    for process in psutil.process_iter():
-        try:
-            if process.cmdline()[1] == 'auto_water.py':
-                running = True
-        except:
-            pass
-    if not running:
-        os.system("python3 auto_water.py&")
     templateData = template()
     return render_template('main.html', **templateData)
 
@@ -47,6 +40,20 @@ def action():
     templateData = template(text=message, pump_status=pump_status)
     return render_template('main.html', **templateData)
 
+@app.route("/full_log")
+def show_full_log():
+    try:
+        with open('watering_log.txt', 'r') as f:
+            full_log = f.readlines()
+        html_compatible_log = ''
+        for line in full_log:
+            html_compatible_log += line + '<br>'    
+        templateData = template(full_log=html_compatible_log)
+        return render_template('main.html', **templateData)
+    except:
+        templateData = template(text="No logs so far.")
+        return render_template('main.html', **templateData)
+
 @app.route("/water",  methods=['GET', 'POST'])
 def water_for_specific_number_of_seconds():
     try:
@@ -60,3 +67,12 @@ def water_for_specific_number_of_seconds():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True)
+    running = False
+    for process in psutil.process_iter():
+        try:
+            if process.cmdline()[1] == 'auto_water.py':
+                running = True
+        except:
+            pass
+    if not running:
+        os.system("python3 auto_water.py&")

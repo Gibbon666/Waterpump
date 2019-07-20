@@ -8,12 +8,16 @@
   <h2>The date and time on the server is: {{ time }}</h2>
   <h2> {{ text }} </h2>
   <h2> {{ pump_status }} </h2>
+  {% autoescape false %}
+  <p><small> {{ full_log }} </small></p>
+  {% endautoescape %}
   <a href="/sensor"><button>Check Soil Status</button></a> <br>
   <form method="POST" action="/water">
     Initiate pump for <input type="text" name="pump_time" size="4" placeholder="20"> seconds
     <input type="submit" value="Water once">
   </form> <br>
   <a href="/last_watered"><button>Check Time Last Watered</button></a> <br>
+  <a href="/full_log"><button>Check full log</button></a> <br>
 
 </body>
 </html>

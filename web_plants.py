@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 import psutil
 import datetime
 import water
@@ -19,6 +19,14 @@ def template(title="HELLO!", text="", pump_status=""):
 
 @app.route("/")
 def hello():
+    for process in psutil.process_iter():
+        try:
+            if process.cmdline()[1] == 'auto_water.py':
+                running = True
+        except:
+            pass
+    if not running:
+        os.system("python3 auto_water.py&")
     templateData = template()
     return render_template('main.html', **templateData)
 
@@ -32,38 +40,23 @@ def action():
     moisture_status, pump_status = water.get_status()
     message = ""
     if (moisture_status == 1):
-        message = "Water me please!"
+        message = "I'm quite possibly just malfunctioning, but it is also possible that the soil is quite dry."
     else:
-        message = "I'm a happy plant"
+        message = "My soil is quite wet, hence this message."
 
     templateData = template(text=message, pump_status=pump_status)
     return render_template('main.html', **templateData)
 
-@app.route("/water")
-def action2():
-    water.pump_on()
-    templateData = template(text = "Watered Once")
-    return render_template('main.html', **templateData)
-
-@app.route("/auto/water/<toggle>")
-def auto_water(toggle):
-    running = False
-    if toggle == "ON":
-        templateData = template(text = "Auto Watering On")
-        for process in psutil.process_iter():
-            try:
-                if process.cmdline()[1] == 'auto_water.py':
-                    templateData = template(text = "Already running")
-                    running = True
-            except:
-                pass
-        if not running:
-            os.system("python3 auto_water.py&")
-    else:
-        templateData = template(text = "Auto Watering Off")
-        os.system("pkill -f water.py")
-
-    return render_template('main.html', **templateData)
+@app.route("/water",  methods=['GET', 'POST'])
+def water_for_specific_number_of_seconds():
+    try:
+        number_of_seconds = int(request.form['pump_time'])
+        water.pump_on(number_of_seconds=number_of_seconds, automatically=0)
+        templateData = template(text = "Watered Once for {} seconds.".format(number_of_seconds))
+        return render_template('main.html', **templateData)
+    except Exception as e:
+        templateData = template(text = "Invalid input, skipping pump initiation.")
+        return render_template('main.html', **templateData)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True)

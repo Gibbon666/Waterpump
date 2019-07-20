@@ -1,51 +1,38 @@
 # External module imp
 import RPi.GPIO as GPIO
+import schedule
 import datetime
 import time
-
-init = False
 
 GPIO.setmode(GPIO.BCM) # Broadcom pin-numbering scheme
 
 def get_last_watered():
     try:
-        f = open("last_watered.txt", "r")
-        return f.readline()
+        f = open("watering_log.txt", "r")
+        return f.read().splitlines()[-1]
     except:
         return "NEVER!"
       
 def get_status(water_sensor_pin=17, pump_pin=14):
     GPIO.setup(water_sensor_pin, GPIO.IN)
     GPIO.setup(pump_pin, GPIO.OUT)
-    return [GPIO.input(water_sensor_pin), 'Pump on' if not GPIO.input(pump_pin) else 'Pump off']
+    return [GPIO.input(water_sensor_pin), 'Pump currently on' if not GPIO.input(pump_pin) else 'Pump currently off']
 
 def init_output(pin):
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.LOW)
     GPIO.output(pin, GPIO.HIGH)
     
-def auto_water(delay = 5, pump_pin = 14, water_sensor_pin = 17):
-    consecutive_water_count = 0
-    init_output(pump_pin)
-    print("Here we go! Press CTRL+C to exit")
-    try:
-        while 1 and consecutive_water_count < 10:
-            time.sleep(delay)
-            wet = get_status(water_sensor_pin = water_sensor_pin) == 0
-            if not wet:
-                if consecutive_water_count < 5:
-                    pump_on(pump_pin, 1)
-                consecutive_water_count += 1
-            else:
-                consecutive_water_count = 0
-    except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly:
-        GPIO.cleanup() # cleanup all GPI
+def auto_water(pump_pin = 14):
+    schedule.every().hour.do(pump_on)
 
-def pump_on(pump_pin = 14, delay = 1):
+def pump_on(pump_pin=14, number_of_seconds=20, automatically=1):
     init_output(pump_pin)
-    f = open("last_watered.txt", "w")
-    f.write("Last watered {}".format(datetime.datetime.now()))
+    pump_initiated_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    trigger = "automatically" if automatically else "by Daniel Baranyai"
+    f = open("watering_log.txt", "a+")
+    f.write("{} Pump started {} for {} seconds\n".format(pump_initiated_at, trigger, number_of_seconds))
     f.close()
     GPIO.output(pump_pin, GPIO.LOW)
-    time.sleep(5)
+    time.sleep(number_of_seconds)
     GPIO.output(pump_pin, GPIO.HIGH)

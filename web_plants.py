@@ -27,7 +27,7 @@ def hello():
 @app.route("/last_watered")
 def check_last_watered():
     try:
-        with open('watering_log.txt', 'r') as f:
+        with open('/home/pi/Waterpump/watering_log.txt', 'r') as f:
             full_log = f.readlines()
         parsed_for = [line.split('for ') for line in full_log if len(line) > 1]
         parsed_for_last = [x[-1] for x in parsed_for]

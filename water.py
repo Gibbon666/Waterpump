@@ -8,7 +8,7 @@ GPIO.setmode(GPIO.BCM) # Broadcom pin-numbering scheme
 
 def get_last_watered():
     try:
-        f = open("watering_log.txt", "r")
+        f = open("/home/pi/Waterpump/watering_log.txt", "r")
         return f.read().splitlines()[-1]
     except:
         return "NEVER!"
@@ -24,7 +24,7 @@ def init_output(pin):
     GPIO.output(pin, GPIO.HIGH)
     
 def auto_water(pump_pin = 14):
-    schedule.every().hour.do(pump_on)
+    schedule.every().hour.at(':00').do(pump_on)
     while True:
         schedule.run_pending()
 

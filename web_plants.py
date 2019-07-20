@@ -3,6 +3,7 @@ import psutil
 import datetime
 import water
 import os
+import re
 
 app = Flask(__name__)
 
@@ -25,8 +26,22 @@ def hello():
 
 @app.route("/last_watered")
 def check_last_watered():
-    templateData = template(text = water.get_last_watered())
-    return render_template('main.html', **templateData)
+    try:
+        with open('watering_log.txt', 'r') as f:
+            full_log = f.readlines()
+        parsed_for = [line.split('for ') for line in full_log if len(line) > 1]
+        parsed_for_last = [x[-1] for x in parsed_for]
+        parsed_numbers = [re.findall(r'\d+', x) for x in parsed_for_last]
+        total = 0
+        number_of_watering = len(parsed_numbers)
+        for number in parsed_numbers:
+            total += int(number[0])
+        templateData = template(text = water.get_last_watered(), 
+                                pump_status="Total watering time: {} seconds after {} occasions.".format(total, number_of_watering))
+        return render_template('main.html', **templateData)
+    except:
+        templateData = template(text = water.get_last_watered())
+        return render_template('main.html', **templateData)
 
 @app.route("/sensor")
 def action():

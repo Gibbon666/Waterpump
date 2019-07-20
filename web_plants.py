@@ -58,7 +58,7 @@ def action():
 @app.route("/full_log")
 def show_full_log():
     try:
-        with open('watering_log.txt', 'r') as f:
+        with open('/home/pi/Waterpump/watering_log.txt', 'r') as f:
             full_log = f.readlines()
         html_compatible_log = ''
         for line in full_log:

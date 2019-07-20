@@ -82,12 +82,3 @@ def water_for_specific_number_of_seconds():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True)
-    running = False
-    for process in psutil.process_iter():
-        try:
-            if process.cmdline()[1] == 'auto_water.py':
-                running = True
-        except:
-            pass
-    if not running:
-        os.system("python3 auto_water.py&")

@@ -15,7 +15,7 @@ def get_last_watered():
       
 def get_status(water_sensor_pin=17, pump_pin=14):
     GPIO.setup(water_sensor_pin, GPIO.IN)
-    GPIO.setup(pump_pin, GPIO.OUT)
+    GPIO.setup(pump_pin, GPIO.IN)
     return [GPIO.input(water_sensor_pin), 'Pump currently on' if not GPIO.input(pump_pin) else 'Pump currently off']
 
 def init_output(pin):

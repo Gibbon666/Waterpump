@@ -3,3 +3,7 @@ Raspberry Pi watering system using a peristaltic pump, a relay and a moisture se
 
 # Remote Monitoring
 I've configured port forwarding and set up an SMTP service which will send me daily emails about the current public IP address, so I can monitor the status of the watering system from wherever I want.
+
+I've also set up a similar service which will notify me if there are tries to hack into VNC.
+
+I've also set up remotely fail2ban and added some notes regarding the setup.

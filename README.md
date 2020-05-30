@@ -6,6 +6,10 @@ Raspberry Pi watering system using a peristaltic pump, a relay and a moisture se
 
 I've configured port forwarding and set up an SMTP service which will send me daily emails about the current public IP address, so I can monitor the status of the watering system from wherever I want.
 
+# Fail2ban 
+
+Set up [fail2ban](docs/fail2ban_vnc_setup.md) service to ban hackers trying to get in through VNC.
+
 # Current Crontabs
 
 ``` bash

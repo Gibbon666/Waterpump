@@ -1,0 +1,11 @@
+Package: get-vnc-users
+Version: 0.1.0
+Architecture: all
+Essential: no
+Priority: optional
+Maintainer: Daniel Baranyai
+Description: get-vnc-users
+  Systemd service to monitor all active VNC users.
+  According to previous observations, `ss sport = :5900` command
+  will display potential intruders, even if they haven't entered
+  a password yet. (e.g. through VNC Viewer app on my phone)

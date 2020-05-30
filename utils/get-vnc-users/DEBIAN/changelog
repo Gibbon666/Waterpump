@@ -1,0 +1,5 @@
+get-vnc-users (0.1.0) unstable; urgency=low
+
+  * First PoC
+
+ -- Daniel Baranyai <bdaniel6@gmail.com>  Sat, 30 May 2020 12:00:00 +0300

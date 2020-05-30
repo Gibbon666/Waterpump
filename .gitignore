@@ -1,4 +1,4 @@
-get_current_ip.py
-get_vnc_users.py
-vnc_users.txt
-watering_log.txt
+__pycache__/*
+creds.json
+logs/*
+*.deb

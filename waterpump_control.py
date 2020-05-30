@@ -1,4 +1,4 @@
-# External module imp
+# External module imports
 import RPi.GPIO as GPIO
 import schedule
 import datetime
@@ -8,7 +8,7 @@ GPIO.setmode(GPIO.BCM) # Broadcom pin-numbering scheme
 
 def get_last_watered():
     try:
-        f = open("/home/pi/Waterpump/watering_log.txt", "r")
+        f = open("/home/pi/Waterpump/logs/watering_log.log", "r")
         return f.read().splitlines()[-1]
     except:
         return "NEVER!"
@@ -32,7 +32,7 @@ def pump_on(pump_pin=14, number_of_seconds=20, automatically=1):
     init_output(pump_pin)
     pump_initiated_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     trigger = "automatically" if automatically else "by Daniel Baranyai"
-    f = open("watering_log.txt", "a+")
+    f = open("logs/watering_log.log", "a+")
     f.write("{} Pump started {} for {} seconds\n".format(pump_initiated_at, trigger, number_of_seconds))
     f.close()
     GPIO.output(pump_pin, GPIO.LOW)

@@ -1,0 +1,3 @@
+#!/bin/bash
+systemctl stop get-vnc-users
+systemctl disable get-vnc-users

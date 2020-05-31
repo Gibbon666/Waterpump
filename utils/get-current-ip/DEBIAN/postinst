@@ -1,0 +1,3 @@
+#!/bin/bash
+systemctl enable get-current-ip
+systemctl restart get-current-ip

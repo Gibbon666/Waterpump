@@ -17,9 +17,9 @@ Set up [fail2ban](docs/fail2ban_vnc_setup.md) service to ban hackers trying to g
 ``` bash
 @reboot cd /home/pi/Waterpump; sudo python3 waterpump_webserver.py
 @reboot cd /home/pi/Waterpump; sudo python3 -c 'from waterpump_control import auto_water; auto_water()'
-0 9 * * * cd /home/pi/Waterpump; PYTHONPATH=$PYTHONPATH:/home/pi/Waterpump sudo python3 utils/get_current_ip.py
 ```
 
 ## Services
 
-get-vnc-users
+- get-current-ip
+- get-vnc-users

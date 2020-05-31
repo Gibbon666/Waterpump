@@ -1,0 +1,11 @@
+Package: get-current-ip
+Version: 0.1.0
+Architecture: all
+Essential: no
+Priority: optional
+Maintainer: Daniel Baranyai
+Description: get-current-ip
+  Systemd service to monitor current public IP.
+  If public IP has changed to the one it has already
+  sent a notification about by email, send another
+  email informing about the new public IP.

@@ -1,0 +1,5 @@
+get-current-ip (0.1.0) unstable; urgency=low
+
+  * First PoC
+
+ -- Daniel Baranyai <bdaniel6@gmail.com>  Sun, 31 May 2020 10:00:00 +0300

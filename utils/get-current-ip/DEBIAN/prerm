@@ -1,0 +1,3 @@
+#!/bin/bash
+systemctl stop get-current-ip
+systemctl disable get-current-ip

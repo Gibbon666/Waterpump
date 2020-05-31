@@ -1,6 +1,6 @@
 # Waterpump
 
-Raspberry Pi watering system using a peristaltic pump, a relay and a moisture sensor. Trying to mimic what was described here: https://www.hackster.io/ben-eagan/raspberry-pi-automated-plant-watering-with-website-8af2dc
+Raspberry Pi watering system using a peristaltic pump, a relay and a moisture sensor. Trying to mimic what was described at [https://www.hackster.io](https://www.hackster.io/ben-eagan/raspberry-pi-automated-plant-watering-with-website-8af2dc), enchanced with some security measures.
 
 # Port forwarding & Firewall
 
@@ -20,7 +20,13 @@ AllowTcpForwarding yes
 
 - Port forwarding & firewall rule to allow traffic on port 5900.
 
-- Set up [fail2ban](docs/fail2ban_vnc_setup.md) service to ban hackers trying to get in through VNC (after 3 unsuccessful tries).
+# Fail2ban
+
+Set up [fail2ban](docs/) service to:
+
+1. ban hackers trying to get in through VNC (after 3 unsuccessful tries).
+
+2. ban hackers trying to get in through SSH (after 3 unsuccessful tries).
 
 # Remote Monitoring
 
@@ -36,6 +42,8 @@ Several [utilities](utils) have been set up to provide useful information about 
 ```
 
 ## Services
+
+Below services are currently installed on the Raspberry Pi as a Debian package:
 
 - get-current-ip
 - get-vnc-users

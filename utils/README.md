@@ -11,7 +11,6 @@ dpkg-deb --build <package-name>
 Get the current public IP and compare with the one stored in memory, if they don't match, send an email with the new one.
 This way we are able to adjust our VNC connection and don't ever lose access to our device.
 
-
 The systemd service [get-current-ip](get-current-ip) is run in a loop with 60s sleep time.
 
 ## Get notified about VNC users

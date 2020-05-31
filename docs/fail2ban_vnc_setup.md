@@ -1,8 +1,8 @@
-# How I set up fail2ban service
+# Fail2ban service for VNC
 
-## 1. Create jail.local at /etc/fail2ban/ by either copying jail.conf or by creating an empty file.
+## 1. If /etc/fail2ban/jail.local is not existing, create it by either copying jail.conf or by creating an empty file.
 
-## 2. Copy and paste below stuff at the end.
+## 2. Copy and paste below stuff at the end of /etc/fail2ban/jail.local
 
 ``` bash
 [vncserver]
@@ -16,7 +16,7 @@ maxretry = 3
 logpath = /var/log/syslog
 ```
 
-## 3. Navigate to /etc/fail2ban/filter.d/ and create vncserver.conf with below content:
+## 3. Create /etc/fail2ban/filter.d/vncserver.conf with below content:
 
 ``` bash
 # Fail2Ban filter for RealVNC auth failures

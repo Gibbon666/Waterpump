@@ -20,3 +20,11 @@ Get notified about potential hackers trying to get in through VNC.
 The systemd service [get-vnc-users](get-vnc-users) is run in a loop
 with 0.5s sleep time, so we basically will get almost instant
 notification about anybody trying to breach the system.
+
+## Save a photo every x seconds
+
+Take a photo with an Android phone connected at 192.168.1.3 to the local network
+through the IP Webcam application.
+
+The systemd service [save-photo](save-photo) is run in a loop
+with 600s sleep time, so we are taking a photo every 10 minutes.

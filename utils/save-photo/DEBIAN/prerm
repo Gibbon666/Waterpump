@@ -1,0 +1,3 @@
+#!/bin/bash
+systemctl stop save-photo
+systemctl disable save-photo

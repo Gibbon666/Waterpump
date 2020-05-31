@@ -1,0 +1,10 @@
+Package: save-photo
+Version: 0.1.0
+Architecture: all
+Essential: no
+Priority: optional
+Maintainer: Daniel Baranyai
+Description: save-photo
+  Systemd service to save a photo every x seconds.
+  An Android mobile phone is expected to be connected
+  at 192.168.1.3 and to have IP Webcam app installed.

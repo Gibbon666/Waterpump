@@ -1,0 +1,12 @@
+[Unit]
+Description=Save a photo every x seconds using an Android phone.
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/bin/save_photo.py
+Restart=on-failure
+RestartSec=1s
+
+[Install]
+WantedBy=multi-user.target

@@ -47,3 +47,4 @@ Below services are currently installed on the Raspberry Pi as a Debian package:
 
 - get-current-ip
 - get-vnc-users
+- save-photo

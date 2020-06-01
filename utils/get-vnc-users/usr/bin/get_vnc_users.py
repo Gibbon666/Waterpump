@@ -61,7 +61,6 @@ def thread_function():
 
 if __name__ == "__main__":
     try:
-        x = threading.Thread(target=thread_function)
-        x.start()
+        threading.Thread(target=thread_function).start()
     except Exception as error:
         print(error)

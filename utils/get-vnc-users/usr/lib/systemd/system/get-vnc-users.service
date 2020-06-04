@@ -6,8 +6,7 @@ After=network.target
 Type=simple
 Environment="PYTHONPATH=$PYTHONPATH:/home/pi/Waterpump/"
 ExecStart=/usr/bin/python3 /usr/bin/get_vnc_users.py
-Restart=on-failure
-RestartSec=1s
+Restart=always
 
 [Install]
 WantedBy=multi-user.target

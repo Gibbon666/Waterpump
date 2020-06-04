@@ -5,8 +5,7 @@ After=network.target
 [Service]
 Type=simple
 ExecStart=/usr/bin/python3 /usr/bin/save_photo.py
-Restart=on-failure
-RestartSec=1s
+Restart=always
 
 [Install]
 WantedBy=multi-user.target

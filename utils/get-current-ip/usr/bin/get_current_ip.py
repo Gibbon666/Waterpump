@@ -5,9 +5,20 @@ Get current public IP address and notify ourselves about it by email.
 
 import re
 import time
+import logging
+import logging.handlers
+import traceback
 import threading
 import requests
 from var_waterpump import mailgun_apikey, mailgun_domain, mailgun_sender, mailgun_recipient
+
+# Configure logging into syslog
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.DEBUG)
+FORMAT = '%(pathname)s [%(levelname)s] %(lineno)s: %(message)s'
+SYSLOG_HANDLER = logging.handlers.SysLogHandler(address='/dev/log')
+SYSLOG_HANDLER.setFormatter(fmt=logging.Formatter(fmt=FORMAT))
+LOGGER.addHandler(SYSLOG_HANDLER)
 
 class IPMonitor: # pylint: disable=too-few-public-methods
     """
@@ -30,6 +41,7 @@ class IPMonitor: # pylint: disable=too-few-public-methods
         current_public_ip != self.previous_public_ip:
             self.previous_public_ip = current_public_ip
             send_simple_message(current_public_ip)
+            LOGGER.debug("Email successfully sent about newest public IP!")
 
 def send_simple_message(public_ip):
     """
@@ -52,11 +64,15 @@ def thread_function():
     """
     ip_monitor = IPMonitor()
     while True:
-        ip_monitor.query_and_compare_public_ip()
-        time.sleep(60)
+        try:
+            ip_monitor.query_and_compare_public_ip()
+        except Exception:
+            LOGGER.debug(traceback.print_exc())
+        finally:
+            time.sleep(60)
 
 if __name__ == "__main__":
     try:
         threading.Thread(target=thread_function).start()
-    except Exception as error: # pylint: disable=broad-except
-        print(error)
+    except Exception: # pylint: disable=broad-except
+        LOGGER.debug(traceback.print_exc())

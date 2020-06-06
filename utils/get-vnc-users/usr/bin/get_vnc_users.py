@@ -7,10 +7,21 @@ be run on the raspberry pi to check for intruders on the VNC port.
 import os
 import re
 import time
+import logging
+import logging.handlers
+import traceback
 import datetime
 import threading
 import requests
 from var_waterpump import mailgun_apikey, mailgun_domain, mailgun_sender, mailgun_recipient
+
+# Configure logging into syslog
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.DEBUG)
+FORMAT = '%(pathname)s [%(levelname)s] %(lineno)s: %(message)s'
+SYSLOG_HANDLER = logging.handlers.SysLogHandler(address='/dev/log')
+SYSLOG_HANDLER.setFormatter(fmt=logging.Formatter(fmt=FORMAT))
+LOGGER.addHandler(SYSLOG_HANDLER)
 
 def check_potential_hackers():
     """
@@ -48,7 +59,7 @@ def check_potential_hackers():
                               "to": mailgun_recipient,
                               "subject": "New VNC user detected",
                               "text": "New VNC user from: {}".format(active_ip[0])})
-
+                    LOGGER.debug("Email successfully sent about potential VNC hacker!")
                 # else: intruder IP already known, do nothing
 
 def thread_function():
@@ -56,11 +67,15 @@ def thread_function():
     Create an infinite loop of the VNC intruder monitor function
     """
     while True:
-        check_potential_hackers()
-        time.sleep(0.5)
+        try:
+            check_potential_hackers()
+        except Exception:
+            LOGGER.debug(traceback.print_exc())
+        finally:
+            time.sleep(0.5)
 
 if __name__ == "__main__":
     try:
         threading.Thread(target=thread_function).start()
-    except Exception as error:
-        print(error)
+    except Exception: # pylint: disable=broad-except
+        LOGGER.debug(traceback.print_exc())

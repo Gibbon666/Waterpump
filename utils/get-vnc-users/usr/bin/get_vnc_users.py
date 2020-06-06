@@ -35,7 +35,7 @@ def check_potential_hackers():
     """
     active_vnc_users = os.popen("ss sport = :5900").readlines()
     split_output = str(active_vnc_users[1:]).split(' ')
-    found_ips = [re.findall(r'\d+.\d+.\d+.\d+:\d+', x) for x in split_output]
+    found_ips = [re.findall(r'\d+.\d+.\d+.\d+', x) for x in split_output]
     ips_filtered = [x for x in found_ips if x != [] and not x[0].startswith('192.168')]
 
     with open('/home/pi/Waterpump/logs/vnc_users.log', 'a') as f_append:

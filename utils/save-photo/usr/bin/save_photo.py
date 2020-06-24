@@ -33,9 +33,10 @@ def save_picture():
     except (ConnectionRefusedError, urllib.error.URLError) as error:
         LOGGER.debug(error)
     finally:
-        # Check if the photo created is an empty file
-        if os.stat(photo_name).st_size == 0:
-            LOGGER.debug("We've had an empty photo taken at {}".format(timestamp))
+        # Check if the photo created has a size that would mean the photo
+        # is too dark, or was an empty file
+        if os.stat(photo_name).st_size < 1.3 * 10**6:
+            LOGGER.debug("We've had an empty or too dark photo taken at {}".format(timestamp))
             os.unlink(photo_name)
         else:
             LOGGER.debug("Photo successfully taken: {}".format(photo_name))
